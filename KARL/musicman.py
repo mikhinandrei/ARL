@@ -4,6 +4,7 @@ from lxml.html import fromstring
 import pandas as pd
 import wave
 
+
 NOTES = ['C',
         'C#',
           'D',
@@ -41,7 +42,6 @@ def get_sound_note(music_freqs, freq):
     freq = np.log(freq)
     log_fr = np.log(list(music_freqs.keys()))
     list_freqs = list(music_freqs.keys())
-    #print(freq, list_freqs[int(round((log_fr[0] - freq)/0.0577))], music_freqs[list_freqs[int(round((log_fr[0] - freq)/0.0577))]])
     try:
         return music_freqs[list_freqs[int(round((log_fr[0] - freq)/0.0577))]]
     except IndexError:

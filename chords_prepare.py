@@ -1,5 +1,5 @@
 import wave
-from lib.musicman import *
+from KARL.musicman import *
 import json
 import pandas as pd
 

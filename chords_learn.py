@@ -4,10 +4,10 @@
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
-from lib.musicman import *
+from KARL.musicman import *
 import matplotlib.pyplot as plt
 
-fname = 'data/test/wonderwall.wav'
+fname = 'data/test/SoS.wav'
 
 chunk = 2500
 
@@ -73,8 +73,6 @@ for i in range(num_channels):
     data = content[i::num_channels]
     while len(data) == chunk * swidth:
         ll = np.array(wave.struct.unpack("%dh" % (len(data) / swidth), data))
-        plt.plot(ll, 'g')
-        plt.show()
         ins.append(ll)
         data = wf.readframes(chunk)
         data = data[1:len(data):2]

@@ -3,7 +3,7 @@
 # ToDo: убрать шлаковые ноты
 
 import wave
-from lib.musicman import *
+from KARL.musicman import *
 
 types = {
     1: np.int8,
