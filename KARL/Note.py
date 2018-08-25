@@ -50,6 +50,7 @@ class Note():
     def __eq__(self, other):
         return str(self) == other
 
+    # Accessors
     def note(self):
         return self.__note
 
