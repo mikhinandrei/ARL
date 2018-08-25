@@ -5,9 +5,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from KARL.musicman import *
-import matplotlib.pyplot as plt
+from KARL.Utilities.Supplier import *
+from KARL.Note import Note
+from KARL.Chord import Chord
 
-fname = 'data/test/SoS.wav'
+fname = 'data/test/reco/nothing.wav'
 
 chunk = 2500
 
@@ -35,25 +37,24 @@ window = np.blackman(chunk)
 content = wf.readframes(chunk)
 #samples = np.fromstring(content, dtype=types[swidth])
 
-music_notes = load_data()
+music_notes = load_data('data/data.csv')
 harm = get_harmony(music_notes, wf, chunk)
 print(harm)
 
-if harm[-1] == 'm':
-    harm = NOTES[(NOTES.index(harm[:-1]) + 3) % 12]
+if harm.type() == 'minor':
+    harm = Chord(Note(harm.main_note() + 3).note())
 
 chords = [harm,
-          NOTES[(NOTES.index(harm) + 2) % 12] + 'm',
+          Chord(harm.main_note() + 2, 'minor'),
           #NOTES[(NOTES.index(harm) + 4) % 12], #NOTES[(NOTES.index(harm) + 4) % 12] + 'm',
-          NOTES[(NOTES.index(harm) + 5) % 12], #NOTES[(NOTES.index(harm) + 5) % 12] + 'm',
-          NOTES[(NOTES.index(harm) + 7) % 12],
-          NOTES[(NOTES.index(harm) + 9) % 12] + 'm'
+          Chord(harm.main_note() + 5), #NOTES[(NOTES.index(harm) + 5) % 12] + 'm',
+          Chord(harm.main_note() + 7),
+          Chord(harm.main_note() + 9, 'minor')
 ]
 
-print(chords)
 # ================================================================
 df = pd.read_csv('data/chords.csv')
-df = df.loc[df['chord'].isin(chords)]
+df = df.loc[df['chord'].isin([str(x) for x in chords])]
 print('selected')
 
 lel = df.loc[:,'1':]

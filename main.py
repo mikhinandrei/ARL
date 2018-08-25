@@ -3,6 +3,7 @@
 # ToDo: убрать шлаковые ноты
 
 import wave
+from KARL.Utilities.Supplier import *
 from KARL.musicman import *
 
 types = {
@@ -11,11 +12,11 @@ types = {
     4: np.int32
 }
 
-music_notes = load_data()
+music_notes = load_data('data/data.csv')
 
 chunk = 2500
 # open up a wave
-wf = wave.open('data/test/man-sold.wav', 'r')
+wf = wave.open('data/test/reco/gravity.wav', 'r')
 
 swidth = wf.getsampwidth()
 num_channels = wf.getnchannels()

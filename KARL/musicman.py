@@ -1,39 +1,22 @@
 import numpy as np
-import requests
-from lxml.html import fromstring
-import pandas as pd
 import wave
+from KARL.Note import Note
+from KARL.Chord import Chord
 
 
 NOTES = ['C',
         'C#',
-          'D',
-          'D#',
-          'E',
-          'F',
-          'F#',
-          'G',
-          'G#',
-          'A',
-          'A#',
-          'B'
+        'D',
+        'D#',
+        'E',
+        'F',
+        'F#',
+        'G',
+        'G#',
+        'A',
+        'A#',
+        'B'
 ]
-
-def get_data():
-    URL = 'https://ru.wikipedia.org/wiki/Частоты_настройки_фортепиано'
-    r = requests.get(URL)
-    t = r.text.replace("br", "/").encode('utf-8')
-    list_doc = fromstring(t)
-
-    tbl = list_doc.cssselect('table')[1]
-    notes = [x.text.strip() for x in tbl.cssselect('td')[2::4]]
-    freqs = [float(x.text.strip().replace(',', '.')) for x in tbl.cssselect('td')[3::4]]
-    pd.DataFrame({'notes': notes, 'freqs': freqs}).to_csv('../data/data.csv')
-
-
-def load_data():
-    df = pd.read_csv('data/data.csv')
-    return dict(zip(df.freqs, df.notes))
 
 
 def get_sound_note(music_freqs, freq):
@@ -101,12 +84,8 @@ def get_harmony(music_notes, wf, chunk):
     print(popular)
     # ToDo: work for case Sound of Silence
     stated = 0
-    tone = popular[0]
+    tone = Note(popular[0])
     if result[NOTES[(NOTES.index(tone) + 3) % 12]] > result[NOTES[(NOTES.index(tone) + 4) % 12]]:
-        return tone + 'm'
+        return Chord(tone, 'minor')
     else:
-        return tone
-
-
-if __name__ == '__main__':
-    get_data()
+        return Chord(tone)
